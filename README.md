@@ -44,16 +44,16 @@ The application targets product catalog layouts (defaulting to `https://books.to
 ## 📂 Project Structure
 ```text
 .
-├── app.py                   # Main Flask server & route handlers
-├── scraper.py               # Scraping logic and BeautifulSoup parser
-├── requirements.txt         # Project dependencies
+├── app.py                 
+├── scraper.py              
+├── requirements.txt         
 ├── static/
 │   ├── css/
-│   │   └── style.css        # UI styling & layout
+│   │   └── style.css        
 │   └── js/
-│       └── main.js          # Client-side JavaScript logic
+│       └── main.js          
 └── templates/
-    └── dashboard.html       # Jinja2 HTML dashboard template
+    └── dashboard.html       
 ```
 
 ---
