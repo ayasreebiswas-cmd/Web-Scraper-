@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Web Scraper</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  
+  <div class="glow-orb orb-top"></div>
+  <div class="glow-orb orb-bottom"></div>
+
+  <div class="container">
+    
+    
+    <header class="glass-panel header-row">
+      <div class="brand">
+        <h1>Product Web Scraper</h1>
+        <p class="subtitle">Extract product catalogs, prices, and stock data</p>
+      </div>
+      <div class="status-badge">
+        <span class="dot"></span> System Ready
+      </div>
+    </header>
+
+    <section class="glass-panel">
+      <form id="scrape-form">
+        <div class="form-grid">
+          <div class="field grow">
+            <label for="target-url">Target URL</label>
+            <input 
+              type="url" 
+              id="target-url" 
+              name="url" 
+              value="{{ default_url }}" 
+              placeholder="https://books.toscrape.com/" 
+              required
+            >
+          </div>
+
+          <div class="field small">
+            <label for="item-limit">Item Limit</label>
+            <input 
+              type="number" 
+              id="item-limit" 
+              name="limit" 
+              value="20" 
+              min="1" 
+              max="100"
+            >
+          </div>
+
+          <div class="field">
+            <button type="submit" id="submit-btn" class="btn btn-primary">Run Scraper</button>
+          </div>
+        </div>
+      </form>
+
+      <div id="status-box" class="alert hidden"></div>
+    </section>
+
+    <section class="glass-panel">
+      <div class="table-header">
+        <div class="title-group">
+          <h2>Scraped Items</h2>
+          <span id="count-tag" class="count-tag">{{ data|length }} items</span>
+        </div>
+
+        <div class="controls">
+          <input type="text" id="table-filter" placeholder="Filter current view...">
+          <a href="/download/csv" class="btn btn-secondary">Export CSV</a>
+          <a href="/download/json" class="btn btn-secondary">Export JSON</a>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Title</th>
+              <th>Price</th>
+              <th>Availability</th>
+              <th>Rating</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="table-body">
+            {% if data %}
+              {% for item in data %}
+                <tr>
+                  <td class="col-idx">{{ loop.index }}</td>
+                  <td class="col-title" title="{{ item.title }}">{{ item.title }}</td>
+                  <td><span class="price-tag">{{ item.price }}</span></td>
+                  <td>
+                    <span class="stock-tag {{ 'in' if 'In' in item.availability else 'out' }}">
+                      {{ item.availability }}
+                    </span>
+                  </td>
+                  <td>{{ item.rating }}</td>
+                  <td>
+                    {% if item.url and item.url != 'N/A' %}
+                      <a href="{{ item.url }}" target="_blank" class="item-link">View Product</a>
+                    {% else %}
+                      <span style="color: var(--text-muted)">N/A</span>
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endfor %}
+            {% else %}
+              <tr>
+                <td colspan="6" class="empty-cell">No scraped data yet. Click "Run Scraper" to get started.</td>
+              </tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
