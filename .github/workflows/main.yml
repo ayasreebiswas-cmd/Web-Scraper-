@@ -23,7 +23,7 @@ jobs:
     - name: Lint and Syntax Check
       run: |
         python -m py_compile app.py scraper.py
-```[cite: 5, 7]
+``[cite: 5, 7]
 
 ---
 
