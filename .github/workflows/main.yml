@@ -2,72 +2,28 @@ name: Python Flask CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v4
-      with:
-        python-version: "3.10"
-    - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-    - name: Lint and Syntax Check
-      run: |
-        python -m py_compile app.py scraper.py
-``[cite: 5, 7]
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
----
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
 
-### **5. Projects (Project Board Items)**
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-*   **Todo**:
-    *   Add custom User-Agent input in UI[cite: 7, 8].
-    *   Implement async request fetching for faster multi-page scans[cite: 7].
-*   **In Progress**:
-    *   Enhance table filtering script in JavaScript[cite: 8].
-*   **Done**:
-    *   Build Flask REST server API endpoints (`/api/scrape`)[cite: 5].
-    *   Create CSV and JSON persistence layer (`write_cache_files`)[cite: 5].
-    *   Implement glassmorphism CSS layout (`style.css`)[cite: 9].
-
----
-
-### **6. Wiki**
-
-Create page titled **Scraper Architecture**:
-
-```markdown
-# Application Architecture
-
-## Data Flow Pipeline
-1. **User Request**: User submits target URL and item limit from `dashboard.html`[cite: 5, 8].
-2. **Fetch Layer**: `app.py` passes parameters to `scrape_products()` in `scraper.py`[cite: 5, 7].
-3. **HTTP & HTML Parsing**: `requests.get()` fetches raw HTML, passed to `BeautifulSoup` using `html.parser`[cite: 7].
-4. **Extraction**: `parse_product_card()` extracts title, price, stock status, rating, and absolute link[cite: 7].
-5. **Caching**: Data persists to `data/scraped_data.json` and `data/scraped_data.csv`[cite: 5].
-6. **Response**: JSON payload updates DOM dynamically or re-renders Jinja2 table view[cite: 5, 8].
-```[cite: 5, 7, 8]
-
----
-
-### **7. Security & Quality**
-
-Create `SECURITY.md`:
-
-```markdown
-# Security Policy
-
-## Scope & Dependencies
-This project relies on `requests`, `flask`, and `beautifulsoup4`[cite: 6]. Ensure dependencies are routinely updated via `pip list --outdated`[cite: 6].
-
-## Reporting Vulnerabilities
-To report potential security bugs or unsafe link handling, please submit an issue directly to the repository issue tracker.
+      - name: Lint and Syntax Check
+        run: |
+          python -m py_compile app.py scraper.py
